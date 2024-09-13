@@ -1,0 +1,24 @@
+services:
+  apache:
+    build: .
+    image: app-php:1.0
+    container_name: app-apache
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+  db:
+    build: .docker/postgres
+    image: app-postgres:1.0
+    container_name: app-db
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker/postgres/data:/var/lib/postgresql/data
